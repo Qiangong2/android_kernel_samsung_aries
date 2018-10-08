@@ -129,13 +129,13 @@ static inline void atomic_dec(atomic_t *v)
 
 #define cmpxchg64_local(ptr, o, n) __cmpxchg64_local_generic((ptr), (o), (n))
 
-static inline int atomic_add_unless(atomic_t *v, int a, int u)
+static inline int __atomic_add_unless(atomic_t *v, int a, int u)
 {
   int c, old;
   c = atomic_read(v);
   while (c != u && (old = atomic_cmpxchg(v, c, c + a)) != c)
     c = old;
-  return c != u;
+  return c;
 }
 
 #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
